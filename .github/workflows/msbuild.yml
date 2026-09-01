@@ -1,37 +1,28 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: MSBuild
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "main" ]
-
-env:
-  SOLUTION_FILE_PATH: .
-  BUILD_CONFIGURATION: Release
-
-permissions:
-  contents: read
+    branches: [ "main", "master" ]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Set up MSVC environment
-      uses: ilammy/msvc-dev-cmd@v1
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
 
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+    - name: Build Solution
+      run: |
+        msbuild /p:Configuration=Release /p:Platform=x64
 
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: BattleyeHostsManager-exe
+        path: x64/Release/*.exe

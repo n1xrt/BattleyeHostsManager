@@ -1,6 +1,5 @@
 # BattleyeHostsManager
 A utility for playing with people who have the Battleye anti-cheat disabled in GTA Online.
-
 <img width="486" height="413" alt="image" src="https://github.com/user-attachments/assets/bbf0d3e3-a88b-4204-a790-43f733f3c072" />
 # For GNU/Linux users
 If you want to play GTA Online, just add these domains to the hosts file:
